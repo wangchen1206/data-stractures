@@ -20,7 +20,7 @@ public class Main {
 //            System.out.println(score);
 //        }
 
-        Array array = new Array(20);
+        Array<Integer> array = new Array(20);
         for (int i = 0; i < 10; i++) {
             array.addLast(i);
         }

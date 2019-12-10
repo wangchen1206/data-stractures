@@ -1,10 +1,12 @@
+import java.util.Objects;
+
 /**
  * @Author: ck
  * @Date: 2019/12/9 20:41
  */
-public class Array {
+public class Array<E> {
 
-    private int[] data;
+    private E[] data;
     private int size;
 
     /**
@@ -13,7 +15,7 @@ public class Array {
      * @param capasity
      */
     public Array(int capasity) {
-        this.data = new int[capasity];
+        this.data = (E[])new Object[capasity];
         this.size = 0;
     }
 
@@ -56,7 +58,7 @@ public class Array {
      *
      * @param e
      */
-    public void addLast(int e) {
+    public void addLast(E e) {
         add(this.size, e);
     }
 
@@ -65,7 +67,7 @@ public class Array {
      *
      * @param e
      */
-    public void addFirst(int e) {
+    public void addFirst(E e) {
         add(0, e);
     }
 
@@ -75,7 +77,7 @@ public class Array {
      * @param index
      * @param e
      */
-    public void add(int index, int e) {
+    public void add(int index, E e) {
         if (size == this.data.length)
             throw new IllegalArgumentException("AddLast failed.Array is full");
         if (index < 0 || index > size)
@@ -95,7 +97,7 @@ public class Array {
      * @param index
      * @return
      */
-    int get(int index) {
+    E get(int index) {
         if (index < 0 || index >= size)
             throw new IllegalArgumentException("Get failed. Index is illegal");
         return this.data[index];
@@ -107,7 +109,7 @@ public class Array {
      * @param index
      * @param e
      */
-    void set(int index, int e) {
+    void set(int index, E e) {
         if (index < 0 || index >= size)
             throw new IllegalArgumentException("Set failed. Index is illegal");
         this.data[index] = e;
@@ -119,9 +121,9 @@ public class Array {
      * @param e
      * @return
      */
-    public boolean contains(int e) {
+    public boolean contains(E e) {
         for (int i = 0; i < this.size; i++) {
-            if (this.data[i] == e)
+            if (this.data[i].equals(e))
                 return true;
         }
         return false;
@@ -134,9 +136,9 @@ public class Array {
      * @param e
      * @return
      */
-    public int find(int e) {
+    public int find(E e) {
         for (int i = 0; i < this.size; i++) {
-            if (this.data[i] == e)
+            if (this.data[i].equals(e))
                 return i;
         }
         return -1;
@@ -148,14 +150,15 @@ public class Array {
      * @param index
      * @return
      */
-    public int remove(int index) {
+    public E remove(int index) {
         if (index < 0 || index >= this.size)
             throw new IllegalArgumentException("Remove failed. Index is illegal");
-        int ret = this.data[index];
+        E ret = this.data[index];
         for (int i = index + 1; i < this.size; i++) {
             this.data[i - 1] = this.data[i];
         }
         this.size--;
+        this.data[size] = null;// loitering objects  != memory leak  游荡的对象，不是内存溢出
         return ret;
     }
 
@@ -163,7 +166,7 @@ public class Array {
      * 删除数组中第一个元素
      * @return
      */
-    public int removeFirst(){
+    public E removeFirst(){
         return remove(0);
     }
 
@@ -171,7 +174,7 @@ public class Array {
      * 删除数组中最后一个元素
      * @return
      */
-    public int removeLast(){
+    public E removeLast(){
         return remove(this.size-1);
     }
 
@@ -180,7 +183,7 @@ public class Array {
      * （只会删除第一个与元素e相等的元素）
      * @param e
      */
-    public void removeElement(int e){
+    public void removeElement(E e){
         int index = find(e);
         if (index != -1)
             remove(index);
