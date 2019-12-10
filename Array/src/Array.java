@@ -15,7 +15,7 @@ public class Array<E> {
      * @param capasity
      */
     public Array(int capasity) {
-        this.data = (E[])new Object[capasity];
+        this.data = (E[]) new Object[capasity];
         this.size = 0;
     }
 
@@ -78,17 +78,33 @@ public class Array<E> {
      * @param e
      */
     public void add(int index, E e) {
-        if (size == this.data.length)
-            throw new IllegalArgumentException("AddLast failed.Array is full");
         if (index < 0 || index > size)
             throw new IllegalArgumentException("AddLast failed.Required index >= 0 and index <= size");
 
+        /**
+         * 如果数组满了，进行两倍的size扩容
+         */
+        if (size == this.data.length)
+            resize(2 * this.data.length);
         for (int i = size - 1; i >= index; i--) {
             this.data[i + 1] = this.data[i];
         }
 
         this.data[index] = e;
         this.size++;
+    }
+
+    /**
+     * 私有的扩容
+     *
+     * @param newCapasity
+     */
+    private void resize(int newCapasity) {
+        E[] newData = (E[]) new Object[newCapasity];
+        for (int i = 0; i < this.size; i++) {
+            newData[i] = this.data[i];
+        }
+        this.data = newData;
     }
 
     /**
@@ -159,31 +175,38 @@ public class Array<E> {
         }
         this.size--;
         this.data[size] = null;// loitering objects  != memory leak  游荡的对象，不是内存溢出
+
+        //解决复杂度震荡。当size是capasity的1/4时，进行缩减，并且capasity != 0
+        if (this.size == this.data.length / 4 && this.data.length / 2 != 0)
+            resize(this.data.length / 2);
         return ret;
     }
 
     /**
      * 删除数组中第一个元素
+     *
      * @return
      */
-    public E removeFirst(){
+    public E removeFirst() {
         return remove(0);
     }
 
     /**
      * 删除数组中最后一个元素
+     *
      * @return
      */
-    public E removeLast(){
-        return remove(this.size-1);
+    public E removeLast() {
+        return remove(this.size - 1);
     }
 
     /**
      * 删除某一个元素
      * （只会删除第一个与元素e相等的元素）
+     *
      * @param e
      */
-    public void removeElement(E e){
+    public void removeElement(E e) {
         int index = find(e);
         if (index != -1)
             remove(index);
