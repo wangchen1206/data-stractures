@@ -1,10 +1,12 @@
+package src;
+
 /**
  * @Author: cc
  * @Date: 2019/12/10 16:15
  */
 public class ArrayStack<E> implements Stack<E> {
 
-    private Array<E> array;
+    Array<E> array;
 
     public ArrayStack(int capasity) {
         this.array = new Array<>(capasity);
