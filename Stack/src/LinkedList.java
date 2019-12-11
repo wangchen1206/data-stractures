@@ -1,6 +1,7 @@
+
 /**
- * @Author: cc
- * @Date: 2019/12/11 16:26
+ * @Author: ck
+ * @Date: 2019/12/11 23:19
  */
 public class LinkedList<E> {
 
