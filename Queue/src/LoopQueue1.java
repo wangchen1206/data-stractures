@@ -1,25 +1,23 @@
 
 /**
- * LoopQueue 声明size
+ * LoopQueue  不声明 size
  *
  * @Author: ck
  * @Date: 2019/12/10 22:54
  */
-public class LoopQueue<E> implements Queue<E> {
+public class LoopQueue1<E> implements Queue<E> {
 
     private E[] data;
     private int front, tail;
-    private int size;
 
-    public LoopQueue(int capasity) {
+    public LoopQueue1(int capasity) {
         //因为要浪费一个空间，来维护循环队列 front == tail 队列为空
         this.data = (E[]) new Object[capasity + 1];
         this.front = 0;
         this.tail = 0;
-        this.size = 0;
     }
 
-    public LoopQueue() {
+    public LoopQueue1() {
         this(10);
     }
 
@@ -34,7 +32,11 @@ public class LoopQueue<E> implements Queue<E> {
 
     @Override
     public int getSize() {
-        return this.size;
+        if (front <= tail) {
+            return tail - front;
+        }else {
+            return data.length - front + tail;
+        }
     }
 
     @Override
@@ -44,7 +46,6 @@ public class LoopQueue<E> implements Queue<E> {
             resize((data.length - 1) * 2);
         data[tail] = e;
         tail = (tail + 1) % data.length;
-        size++;
     }
 
     @Override
@@ -55,8 +56,7 @@ public class LoopQueue<E> implements Queue<E> {
         E ret = data[front];
         data[front] = null;
         front = (front + 1) % data.length;
-        size--;
-        if (size == getCapasity() / 4 && getCapasity() / 2 != 0)
+        if (getSize() == getCapasity() / 4 && getCapasity() / 2 != 0)
             resize(getCapasity() / 2);
         return ret;
     }
@@ -71,7 +71,7 @@ public class LoopQueue<E> implements Queue<E> {
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
-        res.append(String.format("Queue: size = %d , capasity = %s\n", size, getCapasity()));
+        res.append(String.format("Queue: size = %d , capasity = %s\n", getSize(), getCapasity()));
         res.append("front [");
 
         //第一种遍历方式
@@ -93,6 +93,7 @@ public class LoopQueue<E> implements Queue<E> {
 
     private void resize(int newCapasity) {
         E[] newData = (E[]) new Object[newCapasity + 1];
+        int size = getSize();
         for (int i = 0; i < size; i++) {
             newData[i] = data[(i + front) % data.length];
         }
@@ -103,11 +104,11 @@ public class LoopQueue<E> implements Queue<E> {
 
         data = newData;
         front = 0;
-        tail = size;
+        tail = front + size;
     }
 
     public static void main(String[] args) {
-        LoopQueue<Integer> arrayQueue = new LoopQueue<>();
+        LoopQueue1<Integer> arrayQueue = new LoopQueue1<>();
 
         for (int i = 0; i < 10; i++) {
             arrayQueue.enqueue(i);
