@@ -28,5 +28,8 @@ public class Main {
 
         LoopQueue<Integer> loopQueue = new LoopQueue<>();
         System.out.println("时间复杂度：O(n) , LoopQueue, time: " + testQueue(loopQueue,opCount) + " s");
+
+        LinkedListQueue<Integer> linkedListQueue = new LinkedListQueue<>();
+        System.out.println("时间复杂度：O(n) , LinkedListQueue, time: " + testQueue(linkedListQueue,opCount) + " s");
     }
 }
