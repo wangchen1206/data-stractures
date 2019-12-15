@@ -9,11 +9,17 @@ public class Main {
 
         System.out.println();
 
-        bst.inOrder();
+        bst.preOrderNR();
 
         System.out.println();
 
-        bst.postOrder();
+        bst.levelOrder();
+
+//        bst.inOrder();
+//
+//        System.out.println();
+//
+//        bst.postOrder();
 
     }
 }

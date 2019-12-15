@@ -1,3 +1,7 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
 /**
  * @Author: ck
  * @Date: 2019/12/12 21:07
@@ -107,6 +111,7 @@ public class BST<E extends Comparable> {
 
     /**
      * 前序遍历以node为根节点的二分搜索树，递归算法
+     *
      * @param node
      */
     private void preOrder(Node node) {
@@ -121,14 +126,34 @@ public class BST<E extends Comparable> {
     }
 
     /**
+     * 前序遍历的非递归算法。
+     * 深度优先遍历
+     */
+    public void preOrderNR() {
+        Stack<Node> stack = new Stack<>();
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+            Node cur = stack.pop();
+            System.out.println(cur.e);
+
+            if (cur.right != null)
+                stack.push(cur.right);
+            if (cur.left != null)
+                stack.push(cur.left);
+        }
+    }
+
+    /**
      * 中序遍历
      */
-    public void inOrder(){
+    public void inOrder() {
         inOrder(root);
     }
 
     /**
      * 中序遍历以node为根节点的二分搜索树，递归算法。
+     *
      * @param node
      */
     private void inOrder(Node node) {
@@ -143,12 +168,13 @@ public class BST<E extends Comparable> {
     /**
      * 后序遍历
      */
-    public void postOrder(){
+    public void postOrder() {
         postOrder(root);
     }
 
     /**
      * 后序遍历以node为根节点的二分搜索树，递归算法。
+     *
      * @param node
      */
     private void postOrder(Node node) {
@@ -158,6 +184,26 @@ public class BST<E extends Comparable> {
         postOrder(node.left);
         postOrder(node.right);
         System.out.println(node.e);
+    }
+
+    /**
+     * 层序遍历
+     * 广度优先遍历
+     */
+    public void levelOrder() {
+        Queue<Node> queue = new LinkedList();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            Node cur = queue.remove();
+            System.out.println(cur.e);
+
+            if (cur.left != null)
+                queue.add(cur.left);
+            if (cur.right != null)
+                queue.add(cur.right);
+        }
+
     }
 
     @Override
@@ -170,12 +216,12 @@ public class BST<E extends Comparable> {
     private void generateBSTString(Node node, int depth, StringBuilder res) {
         if (node == null) {
             res.append(generateDepthString(depth) + "null\n");
-            return ;
+            return;
         }
 
-        res.append(generateDepthString(depth)+node.e+"\n");
-        generateBSTString(node.left,depth+1,res);
-        generateBSTString(node.right,depth+1,res);
+        res.append(generateDepthString(depth) + node.e + "\n");
+        generateBSTString(node.left, depth + 1, res);
+        generateBSTString(node.right, depth + 1, res);
     }
 
     private String generateDepthString(int depth) {
