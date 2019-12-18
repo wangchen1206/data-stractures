@@ -2,39 +2,40 @@ import java.util.ArrayList;
 
 /**
  * @Author: cc
- * @Date: 2019/12/17 17:36
+ * @Date: 2019/12/18 15:02
  */
-public class BSTSet<E extends Comparable<E>> implements Set<E> {
+public class LinkedListSet<E> implements Set<E> {
 
-    private BST<E> bst;
+    private LinkedList<E> list;
 
-    public BSTSet() {
-        this.bst = new BST<>();
+    public LinkedListSet() {
+        list = new LinkedList<>();
     }
 
     @Override
     public void add(E e) {
-        bst.add(e);
+        if (!list.contains(e))
+            list.addFirst(e);
     }
 
     @Override
     public void remove(E e) {
-        bst.remove(e);
+        list.removeElement(e);
     }
 
     @Override
     public boolean contains(E e) {
-        return bst.contains(e);
+        return list.contains(e);
     }
 
     @Override
     public int getSize() {
-        return bst.size();
+        return list.getSize();
     }
 
     @Override
     public boolean isEmpty() {
-        return bst.isEmpty();
+        return list.isEmpty();
     }
 
     public static void main(String[] args) {
@@ -44,7 +45,7 @@ public class BSTSet<E extends Comparable<E>> implements Set<E> {
         if (FileOperation.readFile("pride-and-prejudice.txt",words1)){
             System.out.println("Total words: "+words1.size());
 
-            BSTSet<String> bstSet = new BSTSet<>();
+            LinkedListSet<String> bstSet = new LinkedListSet<>();
             for (String word:words1)
                 bstSet.add(word);
             System.out.println("Total different words: "+bstSet.getSize());
@@ -55,7 +56,7 @@ public class BSTSet<E extends Comparable<E>> implements Set<E> {
         if (FileOperation.readFile("a-tale-of-two-cities.txt",words2)){
             System.out.println("Total words: "+words1.size());
 
-            BSTSet<String> bstSet = new BSTSet<>();
+            LinkedListSet<String> bstSet = new LinkedListSet<>();
             for (String word:words2)
                 bstSet.add(word);
             System.out.println("Total different words: "+bstSet.getSize());

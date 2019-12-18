@@ -2,29 +2,32 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static void main(String[] args) {
-        System.out.println("Pride and Prejudice");
+    private static double testSet(Set set,String filename){
+        long startTime = System.nanoTime();
 
         ArrayList<String> words1 = new ArrayList<>();
-        if (FileOperation.readFile("pride-and-prejudice.txt",words1)){
+        if (FileOperation.readFile(filename,words1)){
             System.out.println("Total words: "+words1.size());
 
-            BSTSet<String> bstSet = new BSTSet<>();
             for (String word:words1)
-                bstSet.add(word);
-            System.out.println("Total different words: "+bstSet.getSize());
+                set.add(word);
+            System.out.println("Total different words: "+set.getSize());
         }
-        System.out.println();
-        System.out.println("A Table of Two Citiys");
-        ArrayList<String> words2 = new ArrayList<>();
-        if (FileOperation.readFile("a-tale-of-two-cities.txt",words2)){
-            System.out.println("Total words: "+words1.size());
+        long endTime = System.nanoTime();
+        return (endTime - startTime)/1000000000.0;
 
-            BSTSet<String> bstSet = new BSTSet<>();
-            for (String word:words2)
-                bstSet.add(word);
-            System.out.println("Total different words: "+bstSet.getSize());
-        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Pride and Prejudice");
+        BSTSet<String> bstSet = new BSTSet<>();
+        double time1 = testSet(bstSet, "pride-and-prejudice.txt");
+        System.out.println("BSTSet time: "+time1);
+
+        System.out.println();
+        LinkedListSet<String> linkedListSet = new LinkedListSet<>();
+        double time2 = testSet(linkedListSet, "pride-and-prejudice.txt");
+        System.out.println("LinkedListSet time: "+time2);
 
     }
 }
