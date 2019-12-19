@@ -1,4 +1,8 @@
 /**
+ * 最大堆
+ * 是一个完全二叉树
+ * 每一个节点的值不大于其父节点的值，堆顶是最大值
+ *
  * @Author: cc
  * @Date: 2019/12/19 16:28
  */
@@ -12,6 +16,17 @@ public class MaxHeap<E extends Comparable> {
 
     public MaxHeap() {
         this.data = new Array<>();
+    }
+
+    /**
+     * 构造函数 ，将一个数组heapify整理成堆
+     * 时间复杂度是 O(n)
+     * @param arr
+     */
+    public MaxHeap(E[] arr) {
+        data = new Array<>(arr);
+        for (int i = parent(arr.length - 1); i >= 0; i--)
+            siftDown(i);
     }
 
     /**
@@ -41,7 +56,7 @@ public class MaxHeap<E extends Comparable> {
     private int parent(int index) {
         if (index == 0)
             throw new IllegalArgumentException("index-0 doesn't have parent.");
-        return (index - 1) / 2
+        return (index - 1) / 2;
     }
 
     /**
@@ -66,6 +81,7 @@ public class MaxHeap<E extends Comparable> {
 
     /**
      * 向堆中添加元素
+     *
      * @param e
      */
     public void add(E e) {
@@ -74,9 +90,71 @@ public class MaxHeap<E extends Comparable> {
     }
 
     private void siftUp(int k) {
-        while (k > 0 && (data.get(parent(k)).compareTo(data.get(k)) < 0)) {
+        while (k > 0 && data.get(parent(k)).compareTo(data.get(k)) < 0) {
             data.swap(k, parent(k));
             k = parent(k);
         }
     }
+
+    /**
+     * 看堆中最大的元素，堆无任何变化
+     *
+     * @return
+     */
+    public E findMax() {
+        if (data.getSize() == 0)
+            throw new IllegalArgumentException("Can not findMax when heap is empty!");
+        return data.get(0);
+    }
+
+    /**
+     * 取出堆中最大元素
+     *
+     * @return
+     */
+    public E extractMax() {
+        E ret = findMax();
+
+        //先交换堆顶和最后一个元素的位置
+        data.swap(0, data.getSize() - 1);
+        //数组去除最后一个元素，也就是最大的元素
+        data.removeLast();
+        siftDown(0);
+
+        return ret;
+    }
+
+    private void siftDown(int k) {
+        while (leftChild(k) < data.getSize()) {
+            //如果没有右孩子，则data[k] 与 data[leftChild(k)]相比，看是否交换位置
+            int j = leftChild(k);
+            //如果有右孩子，则左孩子与右孩子相比谁大。
+            if (j + 1 < data.getSize() && data.get(j + 1).compareTo(data.get(j)) > 0)
+                j = rightChild(k);
+            //data[j] 是leftChild 和 rightChild 中最大值
+
+            //data[k] 与data[j]相比，看是否交换位置
+            if (data.get(k).compareTo(data.get(j)) >= 0)
+                break;
+            //交换位置
+            data.swap(k, j);
+            k = j;
+        }
+    }
+
+    /**
+     * 取出堆中最大元素，并替换成元素e
+     *
+     * @param e
+     * @return
+     */
+    public E replace(E e) {
+        E ret = findMax();
+        //先替换堆顶的元素
+        data.set(0, e);
+        //再进行siftDown
+        siftDown(0);
+        return ret;
+    }
+
 }
