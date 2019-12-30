@@ -1,25 +1,25 @@
 /**
- * 实现第三版并查集
- * 基于size优化
+ * 实现第四版并查集
+ * 基于rank优化
  *
  * @Author: ck
  * @Date: 2019/12/29 21:53
  */
-public class UnionFind3 implements UF {
+public class UnionFind4 implements UF {
 
     //存放的是每个元素所指向的父亲节点
     private int[] parent;
-    //sz[i]表示根节点为i的树的大小
-    private int[] sz;
+    //sz[i]表示根节点为i的树的高度
+    private int[] rank;
 
-    public UnionFind3(int size) {
+    public UnionFind4(int size) {
         this.parent = new int[size];
-        this.sz = new int[size];
+        this.rank = new int[size];
 
         //这个操作是每个节点指向字节，初始化size个树根。
         for (int i = 0; i < this.parent.length; i++) {
             this.parent[i] = i;
-            this.sz[i] = 1;
+            this.rank[i] = 1;
         }
 
     }
@@ -57,13 +57,16 @@ public class UnionFind3 implements UF {
             return;
 
         //判断合并方向，优化
-        //将元素少的树合并到元素多的树中。这样大多数会减少树的高度。扩大树这种结构查询的优势。
-        if (this.sz[pRoot] < this.sz[qRoot]){
+        //将高度小的树合并到高度大的树中
+        if (this.rank[pRoot] < this.rank[qRoot]) {
             this.parent[pRoot] = qRoot;
-            this.sz[qRoot] += this.sz[pRoot];
-        }else {
+        } else if (this.rank[pRoot] > this.rank[qRoot]) {
             this.parent[qRoot] = pRoot;
-            this.sz[pRoot] += this.sz[qRoot];
+        } else {
+            //两颗树的高度相同
+            this.parent[qRoot] = pRoot;
+            //维护高度 +1
+            this.rank[pRoot] += 1;
         }
 
     }
@@ -75,7 +78,7 @@ public class UnionFind3 implements UF {
      * @param p
      * @return
      */
-    private int find(int p){
+    private int find(int p) {
         if (p < 0 || p >= this.parent.length)
             throw new IllegalArgumentException(" p is out of bound");
         //直到元素指向的父亲节点是该元素本身，也就找到了树的根。
