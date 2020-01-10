@@ -15,6 +15,8 @@ public class Main {
         System.out.println(student1.hashCode());
         Student student2 = new Student(3,1,"cc","w");
         System.out.println(student2.hashCode());
+        System.out.println(Integer.MAX_VALUE);
+        System.out.println(((Integer)Integer.MAX_VALUE).hashCode());
         HashSet<Student> hashSet = new HashSet<>();
         hashSet.add(student1);
 
@@ -28,6 +30,8 @@ public class Main {
         System.out.println(hashMap.get(student1));
         System.out.println(hashMap.get(student2));
         System.out.println(student1.equals(student2));
+
+        System.out.println(new Integer(Integer.MAX_VALUE).hashCode() & 0x7fffffff);
 
     }
 }
